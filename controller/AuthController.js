@@ -11,18 +11,16 @@ exports.postLogin = (req, res, next) => {
 
     const username = req.body.username;
     const password = req.body.password;
-    console.log(username);
     
-    req.session.isLoggedId = true;
-    req.session.user = admin;
-    return req.session.save(err => {
-        console.log(err);
-        res.redirect('/');
-    })
-    // AdminModel.findOne({username : username})
-    // .then (admin => {
-    //     if(admin.password == ' '){
-
-    //     }
-    // }) 
+    AdminModel.findOne({username : username})
+    .then (admin => {
+        if(admin.password == ' '){
+            req.session.isLoggedId = true;
+            req.session.admin = admin;
+            return req.session.save(err => {
+                console.log(err);
+                res.redirect('/');
+            })
+        }
+    }) 
 }
