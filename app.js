@@ -1,4 +1,5 @@
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -34,11 +35,15 @@ app.use(
 );
 
 app.use( (req, res, next) => {
+    if(!req.session.admin) {
+        return next();
+    }
     AdminModel.findById(req.session.admin._id)
     .then( admin => {
         req.admin = admin;
         next();
     })
+    .catch( err => { console.log(err) })
 })
 
 app.use('/', AdminRoutes)
@@ -49,17 +54,21 @@ mongoose.connect(MONGODB_URI)
     AdminModel.find()
     .then( admin => {
         if(admin.length < 1) {
-            const admin = new AdminModel({
-                username: 'admin',
-                password: ' '
-            });
-            
-            admin.save();
+            bcrypt
+            .hash( ' ', 12)
+            .then( (hashedPassword) => {
+                const admin = new AdminModel({
+                    username: 'admin',
+                    password: hashedPassword
+                });
+                
+                admin.save();
+            })
         }
     })
     
     app.listen(3000, () => {
-        console.log(`Serverr running in http://localhost:${3000}`);
+        console.log(`Server running in http://localhost:${3000}`);
     });
 })
 .catch( err => { console.log(err) });
