@@ -1,5 +1,5 @@
 const AdminModel = require('../model/admin');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 
 exports.getLogin = (req, res, next) => {
@@ -14,13 +14,17 @@ exports.postLogin = (req, res, next) => {
     
     AdminModel.findOne({username : username})
     .then (admin => {
-        if(admin.password == ' '){
-            req.session.isLoggedId = true;
-            req.session.admin = admin;
-            return req.session.save(err => {
-                console.log(err);
-                res.redirect('/');
-            })
-        }
+        return bcrypt
+        .compare( password, admin.password)
+        .then( result => {
+            if(result){
+                req.session.isLoggedId = true;
+                req.session.admin = admin;
+                return req.session.save(err => {
+                    console.log(err);
+                    res.redirect('/');
+                })
+            }
+        })
     }) 
 }

@@ -1,3 +1,9 @@
 exports.getBarang = (req, res, next) => {
-    res.render('admin/barang');
+    let isAdmin = false;
+    if(req.admin) {
+        isAdmin = true;
+    }
+    res.render('admin/barang', {
+        isAdmin : isAdmin,
+    });
 }
