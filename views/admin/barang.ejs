@@ -1,6 +1,110 @@
 <%- include('../include/header') %>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   </head>
 
   <body class="d-flex">
+    <%- include('../include/sidebar') %>
+      <div class="" style="background-color: #F5F7FB; width: 100%;">
+        <header class="w-100 d-flex align-items-center justify-content-end p-3 shadow"
+          style="background-color:#FFFFFF;">
+          <h2 class=""><i class="bi bi-box-arrow-right text-danger"></i></h2>
+        </header>
 
-    <%- include('../include/footer') %>
+        <main class="d-flex flex-column align-items-center">
+          <div class="d-flex align-items-center my-4 w-100" style="padding-left: 3vh; padding-right: 3vh;">
+            <h4>Barang</h4>
+          </div>
+
+          <div class="form w-100 my-4" style="padding-left: 3vh; padding-right: 3vh;">
+            <div class="accordion" id="accordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    Tambah Barang Baru
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                  <div class="accordion-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="namabarang" class="form-label">Nama Barang</label>
+                        <input type="text" class="form-control" id="namabarang" aria-describedby="barangHelp">
+                        <div id="barangHelp" class="form-text">Jika ada ukuran, masukkan didalam field ini. Contoh :
+                          Peralon 3"</div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="stok" class="form-label">Stok</label>
+                        <input type="number" class="form-control" id="stok">
+                      </div>
+                      <div class="mb-3">
+                        <label class="sr-only form-label" for="inlineFormInputGroup">Harga</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">Rp. </div>
+                          </div>
+                          <input type="number" class="form-control" id="inlineFormInputGroup">
+                        </div>
+                      </div>
+
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table" style="padding-left: 3vh; padding-right: 3vh;">
+            <div class="widget-background rounded p-4">
+              <table id="example" class="hover widget-background" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Nama Barang</th>
+                    <th>Stok</th>
+                    <th>Harga</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Paralon</td>
+                    <td>20</td>
+                    <td>20000</td>
+                    <td class="d-flex" style="gap: 20px;"><button class="btn btn-primary"><i
+                          class="bi bi-pencil-square"></i> Edit</button><button class="btn btn-danger"><i
+                          class="bi bi-trash"></i> Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Knee</td>
+                    <td>10</td>
+                    <td>3000</td>
+                    <td class="d-flex" style="gap: 20px;"><button class="btn btn-primary"><i
+                          class="bi bi-pencil-square"></i> Edit</button><button class="btn btn-danger"><i
+                          class="bi bi-trash"></i> Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </main>
+      </div>
+
+      <script>
+        $(document).ready(function () {
+          $('#example').DataTable();
+        });
+
+        $('select').ready(function () {
+          $('select').toggleClass('selected');
+        });
+      </script>
+      <%- include('../include/footer') %>
