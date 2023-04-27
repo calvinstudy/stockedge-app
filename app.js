@@ -14,7 +14,6 @@ const AuthRouter = require("./routes/auth");
 
 const app = express();
 
-// const MONGODB_URI = "mongodb://localhost:27017/indomaju";
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: "userSession",
