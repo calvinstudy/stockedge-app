@@ -1,4 +1,5 @@
 const path = require("path");
+const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -13,9 +14,9 @@ const AuthRouter = require("./routes/auth");
 
 const app = express();
 
-const MONGODB_URI = "mongodb://localhost:27017/indomaju";
+// const MONGODB_URI = "mongodb://localhost:27017/indomaju";
 const store = new MongoDBStore({
-  uri: MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: "userSession",
 });
 
@@ -51,7 +52,7 @@ app.use("/", AdminRoutes);
 app.use("/auth", AuthRouter);
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     AdminModel.find().then((admin) => {
       if (admin.length < 1) {

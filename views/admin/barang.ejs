@@ -28,27 +28,26 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
                   <div class="accordion-body">
-                    <form>
+                    <form method="POST" action="/barang">
                       <div class="mb-3">
                         <label for="namabarang" class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control" id="namabarang" aria-describedby="barangHelp">
+                        <input type="text" class="form-control" id="namabarang" name="namabarang"
+                          aria-describedby="barangHelp">
                         <div id="barangHelp" class="form-text">Jika ada ukuran, masukkan didalam field ini. Contoh :
                           Peralon 3"</div>
                       </div>
                       <div class="mb-3">
                         <label for="stok" class="form-label">Stok</label>
-                        <input type="number" class="form-control" id="stok">
+                        <input type="number" class="form-control" id="stok" name="stok">
                       </div>
                       <div class="mb-3">
-                        <label class="sr-only form-label" for="inlineFormInputGroup">Harga</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">Rp. </div>
-                          </div>
-                          <input type="number" class="form-control" id="inlineFormInputGroup">
-                        </div>
+                        <label for="harga" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="harga" name="harga">
                       </div>
-
+                      <div class="mb-3">
+                        <label for="modal" class="form-label">Modal</label>
+                        <input type="number" class="form-control" id="modal" name="modal">
+                      </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                   </div>
@@ -66,35 +65,47 @@
                     <th>Nama Barang</th>
                     <th>Stok</th>
                     <th>Harga</th>
+                    <th>Modal</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Paralon</td>
-                    <td>20</td>
-                    <td>20000</td>
-                    <td class="d-flex" style="gap: 20px;"><button class="btn btn-primary"><i
-                          class="bi bi-pencil-square"></i> Edit</button><button class="btn btn-danger"><i
-                          class="bi bi-trash"></i> Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Knee</td>
-                    <td>10</td>
-                    <td>3000</td>
-                    <td class="d-flex" style="gap: 20px;"><button class="btn btn-primary"><i
-                          class="bi bi-pencil-square"></i> Edit</button><button class="btn btn-danger"><i
-                          class="bi bi-trash"></i> Delete</button>
-                    </td>
-                  </tr>
+                  <% for(let i=0; i < barang.length; i++) { %>
+                    <tr>
+                      <td>
+                        <%= barang[i]._id %>
+                      </td>
+                      <td>
+                        <%= barang[i].namabarang %>
+                      </td>
+                      <td>
+                        <%= barang[i].stok %>
+                      </td>
+                      <td>
+                        <%= barang[i].harga %>
+                      </td>
+                      <td>
+                        <%= barang[i].modal %>
+                      </td>
+                      <td class="d-flex" style="gap: 20px;">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onclick="addDataToModal(`<%= barang[i]._id %>`, `<%= barang[i].namabarang %>`,`<%= barang[i].stok %>`,`<%= barang[i].harga %>`,`<%= barang[i].modal %>`)">
+                          <i class="bi bi-pencil-square"></i> Edit
+                        </button>
+                        <%- include('include/modal-form') %>
+                          <form action="/deletebarang" method="POST">
+                            <input type="hidden" value="<%= barang[i]._id %>" name="idbarangfordeleted">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
+                          </form>
+                      </td>
+                    </tr>
+                    <% }; %>
                 </tbody>
               </table>
             </div>
           </div>
-
         </main>
       </div>
 
@@ -106,5 +117,16 @@
         $('select').ready(function () {
           $('select').toggleClass('selected');
         });
+      </script>
+      <script>
+        function addDataToModal(idbarang, namabarang, stok, harga, modal) {
+          const idupdatedbarang = document.getElementsByName('idupdatedbarang')[0].value = idbarang;
+          const newnamabarang = document.getElementsByName('newnamabarang')[0].value = namabarang;
+          const newstok = document.getElementsByName('newstok')[0].value = stok;
+          const newharga = document.getElementsByName('newharga')[0].value = harga;
+          const newmodal = document.getElementsByName('newmodal')[0].value = modal;
+
+          const formedit = document.getElementsByTagName('form')[1].setAttribute('action', '/barang/' + idbarang);
+        }
       </script>
       <%- include('../include/footer') %>

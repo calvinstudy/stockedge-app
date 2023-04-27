@@ -1,9 +1,15 @@
 const express = require("express");
 const AdminController = require("../controller/AdminController");
-const routes = express.Router();
+const router = express.Router();
 
-routes.get("/dashboard", AdminController.getDashboard);
+router.get("/dashboard", AdminController.getDashboard);
 
-routes.get("/barang", AdminController.getBarang);
+router.get("/barang", AdminController.getBarang);
 
-module.exports = routes;
+router.post("/barang", AdminController.postBarang);
+
+router.post("/barang/:idbarang", AdminController.postEditBarang);
+
+router.post("/deletebarang", AdminController.postDeleteBarang);
+
+module.exports = router;
