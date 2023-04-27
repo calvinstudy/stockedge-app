@@ -1,6 +1,132 @@
 <%- include('../include/header') %>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   </head>
 
   <body class="d-flex">
+    <%- include('../include/sidebar') %>
+      <div class="" style="background-color: #F5F7FB; width: 100%;">
+        <header class="w-100 d-flex align-items-center justify-content-end p-3 shadow"
+          style="background-color:#FFFFFF;">
+          <h2 class=""><i class="bi bi-box-arrow-right text-danger"></i></h2>
+        </header>
 
-    <%- include('../include/footer') %>
+        <main class="d-flex flex-column align-items-center">
+          <div class="d-flex align-items-center my-4 w-100" style="padding-left: 3vh; padding-right: 3vh;">
+            <h4>Barang</h4>
+          </div>
+
+          <div class="form w-100 my-4" style="padding-left: 3vh; padding-right: 3vh;">
+            <div class="accordion" id="accordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    Tambah Barang Baru
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                  <div class="accordion-body">
+                    <form method="POST" action="/barang">
+                      <div class="mb-3">
+                        <label for="namabarang" class="form-label">Nama Barang</label>
+                        <input type="text" class="form-control" id="namabarang" name="namabarang"
+                          aria-describedby="barangHelp">
+                        <div id="barangHelp" class="form-text">Jika ada ukuran, masukkan didalam field ini. Contoh :
+                          Peralon 3"</div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="stok" class="form-label">Stok</label>
+                        <input type="number" class="form-control" id="stok" name="stok">
+                      </div>
+                      <div class="mb-3">
+                        <label for="harga" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="harga" name="harga">
+                      </div>
+                      <div class="mb-3">
+                        <label for="modal" class="form-label">Modal</label>
+                        <input type="number" class="form-control" id="modal" name="modal">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table" style="padding-left: 3vh; padding-right: 3vh;">
+            <div class="widget-background rounded p-4">
+              <table id="example" class="hover widget-background" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Nama Barang</th>
+                    <th>Stok</th>
+                    <th>Harga</th>
+                    <th>Modal</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(let i=0; i < barang.length; i++) { %>
+                    <tr>
+                      <td>
+                        <%= barang[i]._id %>
+                      </td>
+                      <td>
+                        <%= barang[i].namabarang %>
+                      </td>
+                      <td>
+                        <%= barang[i].stok %>
+                      </td>
+                      <td>
+                        <%= barang[i].harga %>
+                      </td>
+                      <td>
+                        <%= barang[i].modal %>
+                      </td>
+                      <td class="d-flex" style="gap: 20px;">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onclick="addDataToModal(`<%= barang[i]._id %>`, `<%= barang[i].namabarang %>`,`<%= barang[i].stok %>`,`<%= barang[i].harga %>`,`<%= barang[i].modal %>`)">
+                          <i class="bi bi-pencil-square"></i> Edit
+                        </button>
+                        <%- include('include/modal-form') %>
+                          <form action="/deletebarang" method="POST">
+                            <input type="hidden" value="<%= barang[i]._id %>" name="idbarangfordeleted">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
+                          </form>
+                      </td>
+                    </tr>
+                    <% }; %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <script>
+        $(document).ready(function () {
+          $('#example').DataTable();
+        });
+
+        $('select').ready(function () {
+          $('select').toggleClass('selected');
+        });
+      </script>
+      <script>
+        function addDataToModal(idbarang, namabarang, stok, harga, modal) {
+          const idupdatedbarang = document.getElementsByName('idupdatedbarang')[0].value = idbarang;
+          const newnamabarang = document.getElementsByName('newnamabarang')[0].value = namabarang;
+          const newstok = document.getElementsByName('newstok')[0].value = stok;
+          const newharga = document.getElementsByName('newharga')[0].value = harga;
+          const newmodal = document.getElementsByName('newmodal')[0].value = modal;
+
+          const formedit = document.getElementsByTagName('form')[1].setAttribute('action', '/barang/' + idbarang);
+        }
+      </script>
+      <%- include('../include/footer') %>
