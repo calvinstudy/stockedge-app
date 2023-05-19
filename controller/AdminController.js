@@ -1,5 +1,6 @@
 const Barang = require("../model/barang");
 const Transaksi = require("../model/transaction");
+const Kategori = require("../model/kategori");
 
 exports.getDashboard = (req, res, next) => {
   let isAdmin = false;
@@ -44,10 +45,10 @@ exports.postBarang = (req, res, next) => {
 
 exports.postEditBarang = (req, res, next) => {
   const idupdatedbarang = req.body.idupdatedbarang;
-  const newnamabarang = req.body.newnamabarang;
-  const newstok = req.body.newstok;
-  const newharga = req.body.newharga;
-  const newmodal = req.body.newmodal;
+  const newnamabarang = req.body.namabarang;
+  const newstok = req.body.stok;
+  const newharga = req.body.harga;
+  const newmodal = req.body.modal;
 
   Barang.findOne({ _id: idupdatedbarang }).then((barang) => {
     barang.namabarang = newnamabarang;
@@ -162,3 +163,48 @@ exports.postHapusTransaksi = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.getKategoriBarang = (req, res, next) => {
+  Kategori.find()
+  .then( kategori => {
+    res.render('admin/kategori/kategoribarang', {
+      kategori: kategori,
+      route: '/kategori'
+    })
+  })
+  .catch( err => {
+    console.log(err);
+  })
+}
+
+exports.postKategoriBarang = (req, res, next) => {
+  const kategori = req.body.kategori;
+  const kategoribaru = new Kategori({
+    kategori: kategori,
+  })
+  
+  kategoribaru.save()
+
+  return res.redirect('/kategori')
+}
+
+exports.postEditKategoriBarang = (req, res, next) => {
+  const idkategori = req.params.idkategori;
+  const kategori = req.body.kategori;
+
+  Kategori.findOne({ _id: idkategori })
+  .then( kategori => {
+    kategori.kategori = kategori;
+
+    return kategori.save();
+  })
+  .catch( err => console.log(err) );
+}
+
+exports.postHapusKategoriBarang = (req, res, next) => {
+  const kategori = req.body.idkategorifordeleted
+  
+  Kategori.findByIdAndDelete(kategori)
+  .then( result => res.redirect('/kategori'))
+  .catch( err => console.log(err) );
+}

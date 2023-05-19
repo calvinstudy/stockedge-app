@@ -26,6 +26,7 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(
   session({
     secret: "my secret",
@@ -54,7 +55,7 @@ app.use("/", AdminRoutes);
 app.use("/auth", AuthRoutes);
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI_DEV)
   .then(() => {
     AdminModel.find().then((admin) => {
       if (admin.length < 1) {
