@@ -24,18 +24,22 @@
     </li>
     <li>
       <a
-        class="nav-link text-white <%= (route == '/barang') ? 'active' : '' %>"
+        class="nav-link text-white d-flex justify-content-between <%= (route == '/barang') ? 'active' : '' %>"
         data-bs-toggle="collapse"
         href="#collapseExample"
         role="button"
         aria-expanded="false"
         aria-controls="collapseExample"
-      >
-        <i class="bi bi-bricks"></i>
-        Inventori
+        onclick="rotateArrow(0)"
+      > 
+        <div class="">
+          <i class="bi bi-bricks"></i>
+          Inventori
+        </div>
+        <i class="text-end bi bi-chevron-down dropdown-arrow"></i>
       </a>
-      <div class="collapse card" id="collapseExample">
-        <ul class="list-group list-group-flush">
+      <div class="collapse rounded" id="collapseExample">
+        <ul class="list-group list-group-flush rounded">
           <li class="list-group-item dropdown-item-custom">
             <a>List Barang</a>
           </li>
@@ -50,11 +54,6 @@
           </li>
         </ul>
       </div>
-    </li>
-    <li>
-      <a href="/kategori" class="nav-link text-white">
-        <i class="bi bi-bookmark"></i> Kategori
-      </a>
     </li>
     <li>
       <a
@@ -139,3 +138,15 @@
     </ul>
   </div>
 </div>
+
+<script>
+  function rotateArrow(index) {
+    const dropdownArrow = document.getElementsByClassName('dropdown-arrow');
+    if(dropdownArrow[index].classList.contains('collapse-icon-rotate')) {
+      dropdownArrow[index].classList.remove('collapse-icon-rotate');
+    } else {
+      dropdownArrow[index].classList.add('collapse-icon-rotate');
+    }
+    console.log(dropdownArrow[index]);
+  }
+</script>
