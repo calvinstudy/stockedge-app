@@ -37,4 +37,6 @@ router.get("/kategori/:idkategori", AdminController.postEditKategoriBarang);
 
 router.post("/deletekategori", AdminController.postHapusKategoriBarang);
 
+router.get("/karyawan", AdminController.getKaryawan);
+
 module.exports = router;

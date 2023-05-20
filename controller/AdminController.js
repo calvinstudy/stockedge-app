@@ -215,3 +215,13 @@ exports.postHapusKategoriBarang = (req, res, next) => {
   .then( result => res.redirect('/kategori'))
   .catch( err => console.log(err) );
 }
+
+exports.getKaryawan = (req, res, next) => {
+  res.render('admin/karyawan/karyawan', {
+    route : '/karyawan'
+  });
+}
+
+exports.postKaryawan = (req, res, next) => {
+  
+}
