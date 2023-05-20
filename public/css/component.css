@@ -6,6 +6,15 @@
 table th, table td {
     color: white !important;
 } */
+.dropdown-item-custom {
+    transition: ease 0.5s;
+}
+
+
+.dropdown-item-custom:hover {
+    background-color: blue;
+    color: white;
+}
 
 .selected {
     color: white;
