@@ -8,6 +8,10 @@ const barangSchema = new Schema(
       type: String,
       require: true,
     },
+    kategori: {
+      type: String,
+      require: true,
+    },
     stok: {
       type: Number,
       require: true,

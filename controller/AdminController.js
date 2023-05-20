@@ -14,25 +14,32 @@ exports.getDashboard = (req, res, next) => {
 };
 
 exports.getBarang = (req, res, next) => {
-  Barang.find()
-    .then((barang) => {
-      res.render("admin/barang/barang", {
-        title: "Inventaris Barang",
-        route: "/barang",
-        barang: barang,
-      });
+  Kategori.find()
+  .then( kategori => {
+    Barang.find()
+      .then((barang) => {
+        res.render("admin/barang/barang", {
+          title: "Inventaris Barang",
+          route: "/barang",
+          barang: barang,
+          kategori: kategori,
+        });
+      })
+      .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 };
 
 exports.postBarang = (req, res, next) => {
   const namabarang = req.body.namabarang;
+  const kategori = req.body.kategori;
   const stok = req.body.stok;
   const harga = req.body.harga;
   const modal = req.body.modal;
 
   const newbarang = new Barang({
     namabarang: namabarang,
+    kategori: kategori,
     stok: stok,
     harga: harga,
     modal: modal,
