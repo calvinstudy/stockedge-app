@@ -13,7 +13,7 @@
   </a>
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item">
+    <li class="nav-item mb-3">
       <a
         href="/dashboard"
         class="nav-link text-white <%= (route == '/dashboard') ? 'active' : '' %>"
@@ -22,11 +22,11 @@
         Dashboard
       </a>
     </li>
-    <li>
+    <li class="nav-item mb-3">
       <a
-        class="nav-link text-white d-flex justify-content-between <%= (route == '/barang') ? 'active' : '' %>"
+        class="nav-link text-white d-flex justify-content-between <%= (route == '/barang' || route == '/kategori') ? 'active' : '' %> mb-1"
         data-bs-toggle="collapse"
-        href="#collapseExample"
+        href="#collapse1"
         role="button"
         aria-expanded="false"
         aria-controls="collapseExample"
@@ -38,40 +38,53 @@
         </div>
         <i class="text-end bi bi-chevron-down dropdown-arrow"></i>
       </a>
-      <div class="collapse rounded" id="collapseExample">
+      <div class="collapse rounded-bottom <%= (route === '/barang' || route === '/kategori') ? 'show' : '' %>" id="collapse1">
         <ul class="list-group list-group-flush rounded">
-          <li class="list-group-item dropdown-item-custom">
-            <a>List Barang</a>
-          </li>
-          <li class="list-group-item dropdown-item-custom">
-            <a>Tambah Barang</a>
-          </li>
-          <li class="list-group-item dropdown-item-custom">
-            <a>Kategori Barang</a>
-          </li>
-          <li class="list-group-item dropdown-item-custom">
-            <a>Tambah Barang</a>
-          </li>
+          <a href="/barang" class="list-group-item dropdown-item-custom <%= (route === '/barang') ? 'active' : '' %>">List Barang</a>
+          <a href="/kategori" class="list-group-item dropdown-item-custom <%= (route === '/kategori') ? 'active' : '' %>">Kategori Barang</a>
         </ul>
       </div>
     </li>
-    <li>
+    <li class="nav-item mb-3">
       <a
-        href="/transaksi"
-        class="nav-link text-white <%= (route == '/transaksi') ? 'active' : '' %>"
+      href="/transaksi"
+      class="nav-link text-white <%= (route == '/transaksi') ? 'active' : '' %>"
       >
-        <i class="bi bi-bag"></i>
-        Transaksi
+      <i class="bi bi-bag"></i>
+      Transaksi
+    </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a
+      href="/karyawan"
+      class="nav-link text-white <%= (route == '/karyawan') ? 'active' : '' %>"
+      >
+      <i class="bi bi-person"></i>
+      Karyawan
       </a>
     </li>
-    <li>
+    <li class="nav-item mb-3">
       <a
-        href="/karyawan"
-        class="nav-link text-white <%= (route == '/karyawan') ? 'active' : '' %>"
-      >
-        <i class="bi bi-person"></i>
-        Karyawan
+        class="nav-link text-white d-flex justify-content-between <%= (route == '/barang' || route == '/kategori') ? 'active' : '' %> mb-1"
+        data-bs-toggle="collapse"
+        href="#collapse2"
+        role="button"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+        onclick="rotateArrow(1)"
+      > 
+        <div class="">
+          <i class="bi bi-file-earmark-check"></i>
+          Laporan Keuangan
+        </div>
+        <i class="text-end bi bi-chevron-down dropdown-arrow"></i>
       </a>
+      <div class="collapse rounded-bottom <%= (route === '' || route === '') ? 'show' : '' %>" id="collapse2">
+        <ul class="list-group list-group-flush rounded">
+          <a href="/daftarkeuangan" class="list-group-item dropdown-item-custom <%= (route === '') ? 'active' : '' %>">Pengeluaran & Pemasukan</a>
+          <a href="#" class="list-group-item dropdown-item-custom <%= (route === '') ? 'active' : '' %>">Pemasukan</a>
+        </ul>
+      </div>
     </li>
   </ul>
   <hr />
@@ -141,12 +154,12 @@
 
 <script>
   function rotateArrow(index) {
-    const dropdownArrow = document.getElementsByClassName('dropdown-arrow');
-    if(dropdownArrow[index].classList.contains('collapse-icon-rotate')) {
-      dropdownArrow[index].classList.remove('collapse-icon-rotate');
+    const dropdownArrow = document.getElementsByClassName('dropdown-arrow')[index];
+    if(dropdownArrow.classList.contains('collapse-icon-rotate')) {
+      dropdownArrow.classList.remove('collapse-icon-rotate');
     } else {
-      dropdownArrow[index].classList.add('collapse-icon-rotate');
+      dropdownArrow.classList.add('collapse-icon-rotate');
     }
-    console.log(dropdownArrow[index]);
+    console.log(dropdownArrow);
   }
 </script>

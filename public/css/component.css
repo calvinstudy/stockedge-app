@@ -10,11 +10,16 @@ table th, table td {
     transition: ease 0.5s;
 }
 
+.dropdown-item-custom a{
+    color: #212529 !important;
+    text-decoration: none;
+}
 
 .dropdown-item-custom:hover {
     background-color: #272b2e;
     color: white;
 }
+
 .selected {
     color: white;
 }

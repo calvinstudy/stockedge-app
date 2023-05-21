@@ -43,4 +43,6 @@ router.get("/tambahkaryawan", AdminController.getTambahKaryawan);
 
 router.post("/tambahkaryawan", AdminController.postTambahKaryawan);
 
+router.get("/daftarkeuangan", AdminController.getLaporanKeuangan);
+
 module.exports = router;

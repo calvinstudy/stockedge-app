@@ -253,3 +253,9 @@ exports.postTambahKaryawan = (req, res, next) => {
 
   return res.redirect('/karyawan')
 }
+
+exports.getLaporanKeuangan = (req, res, next) => {
+  res.render('admin/laporan/daftarkeuangan', {
+    route: '/laporan'
+  })
+}
