@@ -2,6 +2,7 @@ const Barang = require("../model/barang");
 const Transaksi = require("../model/transaction");
 const Kategori = require("../model/kategori");
 const Karyawan = require("../model/karyawan");
+const Keuangan = require("../model/keuangan");
 
 exports.getDashboard = (req, res, next) => {
   let isAdmin = false;
@@ -255,7 +256,96 @@ exports.postTambahKaryawan = (req, res, next) => {
 }
 
 exports.getLaporanKeuangan = (req, res, next) => {
-  res.render('admin/laporan/daftarkeuangan', {
-    route: '/laporan'
+  const bulanmulai = req.query.bulanmulai + '-01'
+  const bulanselesai = req.query.bulanselesai + '-31'
+  if(req.query.bulanmulai || req.query.bulanselesai){
+    Keuangan.find({tanggal: {$gte: bulanmulai, $lte: bulanselesai}})
+    .then( keuangan => {
+      res.render('admin/laporan/daftarkeuangan', {
+        route: '/laporan',
+        keuangan: keuangan,
+        bulanmulai: req.query.bulanmulai,
+        bulanselesai: req.query.bulanselesai,
+      })
+    })
+    .catch( err => console.log(err) );
+  } else {
+    Keuangan.find()
+    .then( keuangan => {
+      res.render('admin/laporan/daftarkeuangan', {
+        route: '/laporan',
+        keuangan: keuangan,
+        bulanmulai: null,
+        bulanselesai: null,
+      })
+    })
+    .catch( err => console.log(err) );
+  }
+}
+
+exports.getTambahDaftarKeuangan = (req, res, next) => {
+  res.render('admin/laporan/tambahdaftarkeuangan',{
+    route: 'laporan',
+    keuangan: null,
   })
+}
+
+exports.postTambahDatfarKeuangan = (req, res, next) => {
+  const tanggal = req.body.tanggal;
+  const tipe = req.body.tipe;
+  const keterangan = req.body.keterangan;
+  const nominal  = req.body.nominal;
+
+  const keuanganbaru = new Keuangan({
+    tanggal: tanggal,
+    tipe: tipe,
+    keterangan: keterangan,
+    nominal: nominal,
+  })
+
+  keuanganbaru.save();
+  return res.redirect('/daftarkeuangan');
+}
+
+exports.getEditDaftarKeuangan = (req, res, next) => {
+  const iddaftar = req.params.iddaftar;
+  Keuangan.findOne({ _id: iddaftar})
+  .then( keuangan => {
+    res.render('admin/laporan/tambahdaftarkeuangan', {
+      route: '/daftarkeuangan',
+      keuangan: keuangan,
+    });
+  })
+}
+
+exports.postEditDaftarKeuangan = (req, res, next) => {
+  const iddaftar = req.params.iddaftar;
+  const tanggal = req.body.tanggal;
+  const tipe = req.body.tipe;
+  const keterangan = req.body.keterangan;
+  const nominal = req.body.nominal;
+
+  Keuangan.findOne({ _id: iddaftar })
+  .then(keuangan => {
+    keuangan.tanggal = tanggal;
+    keuangan.tipe = tipe;
+    keuangan.keterangan = keterangan;
+    keuangan.nominal = nominal;
+
+    return keuangan.save();
+  })
+  .then( res => {
+    return res.redirect('/daftarbarang');
+  })
+  .catch( err => console.log(err) );
+
+}
+
+exports.postHapusDaftarKeuangan = (req, res, next) => {
+  const iddaftarkeuangan = req.body.iddaftarkeuangan;
+  Keuangan.findByIdAndDelete(iddaftarkeuangan)
+  .then( result => {
+    return res.redirect('/daftarkeuangan');
+  })
+  .catch( err => console.log(err) );
 }
