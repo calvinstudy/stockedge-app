@@ -4,3 +4,8 @@ To do :
  Tambah karyawan v
  Pencatatan pengeluaran operasional toko
  Pemasukan per periode (hari, bulan, tahun)
+
+- Minor bug
+Tambah daftar keuangan ngebug pas mau submit
+Pas mau ngecek karyawan udah di gaji apa belum, pengecekannya ngeloss
+cek bagian model karyawan
