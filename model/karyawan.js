@@ -24,8 +24,30 @@ const karyawanSchema = new Schema(
       type: String,
       require: true,
     },
+    riwayatgaji: [
+      {
+        bulan: {
+          type: String,
+        },
+        tahun: {
+          type: String,
+        },
+      }
+    ]
   },
   { collection: "karyawan" }
 );
+
+karyawanSchema.methods.cekGajiBulanIni = function () {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  if(this.riwayatgaji.includes({bulan: month, tahun: year})){
+    return true;
+  }
+
+  return false;
+}
 
 module.exports = mongoose.model("karyawan", karyawanSchema);

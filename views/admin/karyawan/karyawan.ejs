@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="table" style="padding-left: 3vh; padding-right: 3vh;">
-            <div class="rounded shadow p-4">
+            <div class="rounded shadow p-4" style="background-color: white;">
               <table id="example" class="hover display" style="width:100%">
                 <thead>
                   <tr>
@@ -45,8 +45,10 @@
                       <td><%= karyawan[i].gaji %></td>
                       <td><%= karyawan[i].status %></td>
                       <td class="d-flex" style="gap: 20px;">
-                        <a class="btn btn-primary" href="/karyawan/edit/<%= karyawan[i]._id %>"><i
-                            class="bi bi-pencil-square"></i> Edit</a>
+                        <a class="btn btn-primary" href="/karyawan/edit/<%= karyawan[i]._id %>"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <form action="/karyawan/gaji/<%= karyawan[i]._id %>" method="POST">
+                          <button class="btn btn-success" type="submit"><i class="bi bi-cash-stack"></i> Gaji</button>
+                        </form>
                       </td>
                     </tr>
                   <% } %>

@@ -83,29 +83,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td scope="row" class="align-middle">Calvin</td>
-                    <td class="align-middle">Rp. 1000000</td>
-                    <td class="align-middle"><span class="bg-success p-1 rounded-3"
-                        style="font-size: 15px;">Success</span>
-                    </td>
-                    <td><button class="btn btn-primary">Detail</button></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="align-middle">Andika</td>
-                    <td class="align-middle">Rp. 1000000</td>
-                    <td class="align-middle"><span class="bg-primary p-1 rounded-3" style="font-size: 15px;">In
-                        Progress</span></td>
-                    <td><button class="btn btn-primary">Detail</button></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="align-middle">Ansell</td>
-                    <td class="align-middle">Rp. 1000000</td>
-                    <td class="align-middle"><span class="bg-warning p-1 rounded-3"
-                        style="font-size: 15px;">Pending</span>
-                    </td>
-                    <td><button class="btn btn-primary">Detail</button></td>
-                  </tr>
+                  <% for(let i = 0; i < transaksi.length; i++) { %>
+                    <tr>
+                      <td scope="row" class="align-middle"><%= transaksi[i].namapembeli %></td>
+                      <td class="align-middle">Rp. <%= transaksi[i].total %></td>
+                      <td class="align-middle"><span class="<%= (transaksi[i].status == 'Success') ? 'bg-success' : (transaksi[i].status == 'Belum Bayar') ? 'bg-danger' : 'bg-secondary' %> p-1 rounded-3"
+                          style="font-size: 15px; color: white;"><%= transaksi[i].status %></span>
+                      </td>
+                      <td><button class="btn btn-primary">Detail</button></td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>

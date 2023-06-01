@@ -18,10 +18,7 @@ router.get("/transaksi/tambah", AdminController.getTambahTransaksi);
 
 router.post("/transaksi/tambah", AdminController.postTambahTransaksi);
 
-router.post(
-  "/transaksi/edit/hapusbarang",
-  AdminController.postHapusBarangdiCart
-);
+router.post("/transaksi/edit/hapusbarang", AdminController.postHapusBarangdiCart);
 
 router.get("/transaksi/edit/:idtransaksi", AdminController.getEditTransaksi);
 
@@ -38,6 +35,8 @@ router.get("/kategori/:idkategori", AdminController.postEditKategoriBarang);
 router.post("/deletekategori", AdminController.postHapusKategoriBarang);
 
 router.get("/karyawan", AdminController.getKaryawan);
+
+router.post("/karyawan/gaji/:idkaryawan", AdminController.postBayarGajiKaryawan);
 
 router.get("/tambahkaryawan", AdminController.getTambahKaryawan);
 

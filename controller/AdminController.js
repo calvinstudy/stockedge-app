@@ -6,13 +6,17 @@ const Keuangan = require("../model/keuangan");
 
 exports.getDashboard = (req, res, next) => {
   let isAdmin = false;
-  if (req.admin) {
-    isAdmin = true;
-  }
-  res.render("admin/dashboard/dashboard", {
-    route: "/dashboard",
-    isAdmin: isAdmin,
-  });
+  // if (req.admin) {
+  //   isAdmin = true;
+  // }
+  Transaksi.find()
+  .limit(5)
+  .then( transaksi => {
+    res.render("admin/dashboard/dashboard", {
+      route: "/dashboard",
+      transaksi: transaksi,
+    });
+  })
 };
 
 exports.getBarang = (req, res, next) => {
@@ -75,6 +79,9 @@ exports.postDeleteBarang = (req, res, next) => {
   const idbarang = req.body.idbarangfordeleted;
   Barang.findOneAndDelete({ _id: idbarang }).then((result) => {
     res.redirect("/barang");
+  })
+  .catch( err => {
+    console.log(err);
   });
 };
 
@@ -255,6 +262,42 @@ exports.postTambahKaryawan = (req, res, next) => {
   return res.redirect('/karyawan')
 }
 
+exports.postBayarGajiKaryawan = (req, res, next) => {
+  const idkaryawan = req.params.idkaryawan;
+  
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'Oktober', 'November', 'Desember'];
+
+  Karyawan.findOne({ _id: idkaryawan })
+  .then( karyawan => {
+    // (karyawan.cekGajiBulanIni())
+    if(!karyawan.cekGajiBulanIni()){      
+      const keuangan = new Keuangan({
+        tanggal: date.getDate() + '-' + date.getMonth() + '-' + + date.getFullYear(),
+        tipe: 'Keluar',
+        keterangan: 'Bayar gaji ' + karyawan.nama + ' bulan ' + bulan[parseInt(date.getMonth()) - 1] + ' ' + date.getFullYear(),
+        nominal: karyawan.gaji,
+      });
+      
+      try {
+        karyawan.riwayatgaji.push({bulan: month, tahun: year});
+        karyawan.save();
+        keuangan.save();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
+  return res.redirect('/karyawan');
+}
+
 exports.getLaporanKeuangan = (req, res, next) => {
   const bulanmulai = req.query.bulanmulai + '-01'
   const bulanselesai = req.query.bulanselesai + '-31'
@@ -284,9 +327,9 @@ exports.getLaporanKeuangan = (req, res, next) => {
 }
 
 exports.getTambahDaftarKeuangan = (req, res, next) => {
-  res.render('admin/laporan/tambahdaftarkeuangan',{
+  return res.render('admin/laporan/tambahdaftarkeuangan',{
     route: 'laporan',
-    keuangan: null,
+    keuangan: false,
   })
 }
 
